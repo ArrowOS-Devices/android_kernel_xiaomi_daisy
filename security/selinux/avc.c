@@ -471,6 +471,7 @@ static inline int avc_xperms_audit(u32 ssid, u32 tsid, u16 tclass,
 				u8 perm, int result,
 				struct common_audit_data *ad)
 {
+#ifdef CONFIG_AUDIT
 	u32 audited, denied;
 
 	audited = avc_xperms_audit_required(
@@ -479,6 +480,9 @@ static inline int avc_xperms_audit(u32 ssid, u32 tsid, u16 tclass,
 		return 0;
 	return slow_avc_audit(ssid, tsid, tclass, requested,
 			audited, denied, result, ad, 0);
+#else
+	return 0;
+#endif
 }
 
 static void avc_node_free(struct rcu_head *rhead)
